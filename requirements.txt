@@ -3,3 +3,4 @@ magika
 Flask-HTTPAuth
 Werkzeug
 gunicorn
+requests
