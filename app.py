@@ -23,7 +23,7 @@ def verify_password(username, password):
 def identify_bytes():
     content = request.data
     result = magika_instance.identify_bytes(content)
-    return jsonify({"ct_label": result.output.ct_label})
+    return jsonify(result.output)
 
 @app.route('/health', methods=['GET'])
 def health_check():
