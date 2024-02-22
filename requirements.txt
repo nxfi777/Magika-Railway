@@ -2,3 +2,4 @@ flask
 magika
 Flask-HTTPAuth
 Werkzeug
+gunicorn
