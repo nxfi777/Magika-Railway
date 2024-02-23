@@ -1,26 +1,24 @@
 from flask import Flask, request, jsonify
-from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_httpauth import HTTPTokenAuth
 from magika import Magika
 import os
 import requests
 
 app = Flask(__name__)
-auth = HTTPBasicAuth()
+auth = HTTPTokenAuth(scheme='Bearer')
+
+TOKEN = os.environ.get('AUTH_TOKEN', 'default-token')
+
+@auth.verify_token
+def verify_token(token):
+    if token == TOKEN:
+        return True
+    return None
+
 magika_instance = Magika()
 
-users = {
-    os.environ['USER']: generate_password_hash(os.environ['PASS']),
-}
-
-@auth.verify_password
-def verify_password(username, password):
-    if username in users:
-        return check_password_hash(users.get(username), password)
-    return False
-
 @app.route('/identify_bytes', methods=['POST'])
-@auth.login_required # Basic Auth
+@auth.login_required
 def identify_bytes():
     content = request.data
     result = magika_instance.identify_bytes(content)
