@@ -4,12 +4,11 @@ FROM python:3.11.0-slim
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Create a non-root user and change ownership of work directory
 RUN adduser --disabled-password --gecos '' magika_user
